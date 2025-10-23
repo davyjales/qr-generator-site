@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gerador de QR Code Multifuncional</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+  <header>
+    <h1>Gerador de QR Code Multifuncional</h1>
+  </header>
+
+  <main>
+    <div class="container">
+      <div class="form-section">
+        <div class="type-selector">
+          <label for="qr-type">Tipo de QR Code:</label>
+          <select id="qr-type">
+            <option value="url">URL</option>
+            <option value="vcard">vCard Profissional</option>
+            <option value="file">PDF ou Imagem</option>
+            <option value="text">Texto</option>
+            <option value="wifi">Wi-Fi</option>
+          </select>
+        </div>
+
+        <form id="qr-form">
+          <!-- URL Form -->
+          <div id="url-form" class="form-group">
+            <label for="url-input">URL:</label>
+            <input type="url" id="url-input" name="url" placeholder="https://exemplo.com" required>
+            <small>Insira a URL completa do site.</small>
+          </div>
+
+          <!-- vCard Form -->
+          <div id="vcard-form" class="form-group hidden">
+            <label for="name">Nome:</label>
+            <input type="text" id="name" name="name" required>
+            <label for="company">Empresa:</label>
+            <input type="text" id="company">
+            <label for="position">Cargo:</label>
+            <input type="text" id="position">
+            <label for="phone">Telefone:</label>
+            <input type="tel" id="phone">
+            <label for="email">E-mail:</label>
+            <input type="email" id="email">
+            <label for="website">Site:</label>
+            <input type="url" id="website">
+            <label for="address">Endereço:</label>
+            <textarea id="address"></textarea>
+            <small>Preencha os campos para gerar um cartão de contato profissional.</small>
+          </div>
+
+          <!-- File Upload Form -->
+          <div id="file-form" class="form-group hidden">
+            <label for="file-input">Arquivo (PDF ou Imagem):</label>
+            <input type="file" id="file-input" accept=".pdf,.jpg,.jpeg,.png,.gif" required>
+            <small>Faça upload de um PDF ou imagem. O QR code apontará para o download do arquivo.</small>
+          </div>
+
+          <!-- Text Form -->
+          <div id="text-form" class="form-group hidden">
+            <label for="text-input">Texto:</label>
+            <textarea id="text-input" name="text" placeholder="Digite seu texto aqui..." required></textarea>
+            <small>Insira qualquer texto que deseja codificar no QR code.</small>
+          </div>
+
+          <!-- Wi-Fi Form -->
+          <div id="wifi-form" class="form-group hidden">
+            <label for="ssid">Nome da Rede (SSID):</label>
+            <input type="text" id="ssid" name="ssid" required>
+            <label for="password">Senha:</label>
+            <input type="password" id="password">
+            <label for="security">Tipo de Segurança:</label>
+            <select id="security">
+              <option value="nopass">Nenhuma</option>
+              <option value="WPA">WPA</option>
+              <option value="WEP">WEP</option>
+            </select>
+            <small>Configure os detalhes da rede Wi-Fi para gerar um QR code de conexão.</small>
+          </div>
+
+          <!-- Customization Options -->
+          <div class="customization">
+            <h3>Personalização</h3>
+            <label for="qr-color">Cor do QR Code:</label>
+            <input type="color" id="qr-color" value="#000000">
+            <label for="bg-color">Cor de Fundo:</label>
+            <input type="color" id="bg-color" value="#FFFFFF">
+            <label for="logo-input">Logo (opcional):</label>
+            <input type="file" id="logo-input" accept="image/*">
+            <label for="size">Tamanho:</label>
+            <select id="size">
+              <option value="256">Pequeno (256x256)</option>
+              <option value="512">Médio (512x512)</option>
+              <option value="1024">Grande (1024x1024)</option>
+            </select>
+          </div>
+
+          <button type="button" id="generate-btn">Gerar e Baixar QR Code</button>
+        </form>
+
+        <div id="message" class="message"></div>
+      </div>
+
+      <div class="preview-section">
+        <h2>Pré-visualização</h2>
+        <canvas id="qr-preview"></canvas>
+        <p id="preview-text">Selecione um tipo e preencha os dados para ver a pré-visualização.</p>
+      </div>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

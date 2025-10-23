@@ -1,0 +1,15 @@
+# TODO List for Multifunctional QR Code Generator Project
+
+- [x] Create package.json with project metadata and dependencies (express, qr-with-logo, multer, cors, uuid)
+- [x] Create server.js to set up Express server with CORS, static files, and routes
+- [x] Create routes/qr.js for POST /api/qr endpoint to generate QR codes
+- [x] Create routes/upload.js for POST /upload endpoint to handle file uploads
+- [x] Create public/index.html for the main UI with type selector, forms, preview, and customization
+- [x] Create public/style.css for responsive and modern styling
+- [x] Create public/script.js for frontend logic and interactions
+- [x] Create uploads/ directory for storing uploaded files
+- [x] Install dependencies using npm install
+- [x] Start the server with node server.js
+- [x] Test the application: select types, fill forms, preview, customize, generate and download QR codes
+- [x] Verify responsiveness on mobile/desktop
+- [x] Test error handling for invalid inputs and file size limits
