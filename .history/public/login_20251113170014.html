@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Gerador de QR Code</title>
+  <link rel="stylesheet" href="login.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="auth-container">
+    <div class="auth-background">
+      <div class="gradient-orb orb-1"></div>
+      <div class="gradient-orb orb-2"></div>
+      <div class="gradient-orb orb-3"></div>
+    </div>
+    
+    <div class="auth-card">
+      <div class="auth-header">
+        <div class="logo">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="48" height="48" rx="12" fill="url(#gradient)"/>
+            <path d="M12 12h24v24H12z" stroke="white" stroke-width="2" stroke-linecap="round"/>
+            <path d="M18 18h12v12H18z" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+            <defs>
+              <linearGradient id="gradient" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#667eea"/>
+                <stop offset="1" stop-color="#764ba2"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <h1>Gerador de QR Code</h1>
+        <p class="subtitle">Crie QR Codes profissionais em segundos</p>
+      </div>
+
+      <!-- Login Form -->
+      <div id="login-form" class="auth-form active">
+        <h2>Bem-vindo de volta</h2>
+        <p class="form-description">Faça login para continuar</p>
+        
+        <form id="login-form-element">
+          <div class="input-group">
+            <label for="login-username">Username ou Email</label>
+            <input 
+              type="text" 
+              id="login-username" 
+              placeholder="Digite seu username ou email" 
+              required
+              autocomplete="username"
+            >
+            <span class="input-icon">👤</span>
+          </div>
+          
+          <div class="input-group">
+            <label for="login-password">Senha</label>
+            <input 
+              type="password" 
+              id="login-password" 
+              placeholder="Digite sua senha" 
+              required
+              autocomplete="current-password"
+            >
+            <span class="input-icon">🔒</span>
+            <button type="button" class="toggle-password" id="toggle-login-password">👁️</button>
+          </div>
+          
+          <div class="form-options">
+            <label class="remember-me">
+              <input type="checkbox" id="remember-me">
+              <span>Lembrar-me</span>
+            </label>
+          </div>
+          
+          <button type="submit" class="auth-button">
+            <span>Entrar</span>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </form>
+        
+        <div class="auth-divider">
+          <span>ou</span>
+        </div>
+        
+        <p class="switch-form">
+          Não tem uma conta? 
+          <a href="#" id="switch-to-register">Registre-se agora</a>
+        </p>
+      </div>
+
+      <!-- Register Form -->
+      <div id="register-form" class="auth-form">
+        <h2>Criar conta</h2>
+        <p class="form-description">Preencha os dados para começar</p>
+        
+        <form id="register-form-element">
+          <div class="input-group">
+            <label for="register-name">Nome completo</label>
+            <input 
+              type="text" 
+              id="register-name" 
+              placeholder="Digite seu nome completo" 
+              required
+              autocomplete="name"
+            >
+            <span class="input-icon">👨‍💼</span>
+          </div>
+          
+          <div class="input-group">
+            <label for="register-email">Email</label>
+            <input 
+              type="email" 
+              id="register-email" 
+              placeholder="Digite seu email" 
+              required
+              autocomplete="email"
+            >
+            <span class="input-icon">📧</span>
+          </div>
+          
+          <div class="input-group">
+            <label for="register-username">Username</label>
+            <input 
+              type="text" 
+              id="register-username" 
+              placeholder="Escolha um username" 
+              required
+              autocomplete="username"
+            >
+            <span class="input-icon">🎯</span>
+          </div>
+          
+          <div class="input-group">
+            <label for="register-password">Senha</label>
+            <input 
+              type="password" 
+              id="register-password" 
+              placeholder="Mínimo 6 caracteres" 
+              required
+              autocomplete="new-password"
+              minlength="6"
+            >
+            <span class="input-icon">🔒</span>
+            <button type="button" class="toggle-password" id="toggle-register-password">👁️</button>
+            <div class="password-strength">
+              <div class="strength-bar"></div>
+            </div>
+          </div>
+          
+          <button type="submit" class="auth-button">
+            <span>Criar conta</span>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </form>
+        
+        <div class="auth-divider">
+          <span>ou</span>
+        </div>
+        
+        <p class="switch-form">
+          Já tem uma conta? 
+          <a href="#" id="switch-to-login">Faça login</a>
+        </p>
+      </div>
+
+      <!-- Message -->
+      <div id="auth-message" class="auth-message"></div>
+    </div>
+  </div>
+
+  <script src="login.js"></script>
+</body>
+</html>
+

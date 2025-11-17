@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gerador de QR Code Multifuncional</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+  <header class="main-header">
+    <div class="header-content">
+      <div class="logo-section">
+        <div class="logo">
+          <svg width="40" height="40" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="48" height="48" rx="12" fill="url(#headerGradient)"/>
+            <path d="M12 12h24v24H12z" stroke="white" stroke-width="2" stroke-linecap="round"/>
+            <path d="M18 18h12v12H18z" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+            <defs>
+              <linearGradient id="headerGradient" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#667eea"/>
+                <stop offset="1" stop-color="#764ba2"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <h1>Gerador de QR Code</h1>
+      </div>
+      
+      <nav id="main-nav">
+        <button class="nav-btn active" data-tab="generator">
+          <span>🎨</span>
+          <span>Gerador</span>
+        </button>
+        <button class="nav-btn" data-tab="creations">
+          <span>📚</span>
+          <span>Minhas Criações</span>
+        </button>
+      </nav>
+
+      <div id="auth-section" class="auth-section">
+        <div class="user-info" id="user-info">
+          <div class="user-avatar">
+            <span id="user-initial">U</span>
+          </div>
+          <span class="user-name" id="user-name">Usuário</span>
+        </div>
+        <button id="logout-btn" class="logout-btn">
+          <span>🚪</span>
+          <span>Sair</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <!-- Aba Gerador -->
+    <div id="generator-tab" class="tab-content active">
+      <div class="container">
+        <div class="form-section">
+          <div class="section-header">
+            <h2>Criar QR Code</h2>
+            <p>Escolha o tipo e personalize seu QR Code</p>
+          </div>
+
+          <div class="type-selector">
+            <label for="qr-type">Tipo de QR Code</label>
+            <select id="qr-type" class="modern-select">
+              <option value="url">🌐 URL</option>
+              <option value="vcard">👤 vCard Profissional</option>
+              <option value="file">📄 PDF ou Imagem</option>
+              <option value="text">📝 Texto</option>
+              <option value="wifi">📶 Wi-Fi</option>
+            </select>
+          </div>
+
+          <form id="qr-form" class="qr-form">
+            <!-- URL Form -->
+            <div id="url-form" class="form-group">
+              <label for="url-input">URL</label>
+              <div class="input-wrapper">
+                <span class="input-icon">🔗</span>
+                <input type="url" id="url-input" name="url" placeholder="https://exemplo.com" required>
+              </div>
+              <small>Insira a URL completa do site</small>
+            </div>
+
+            <!-- vCard Form -->
+            <div id="vcard-form" class="form-group hidden">
+              <label for="name">Nome</label>
+              <div class="input-wrapper">
+                <span class="input-icon">👤</span>
+                <input type="text" id="name" name="name" placeholder="Seu nome completo" required>
+              </div>
+              
+              <label for="company">Empresa</label>
+              <div class="input-wrapper">
+                <span class="input-icon">🏢</span>
+                <input type="text" id="company" placeholder="Nome da empresa">
+              </div>
+              
+              <label for="position">Cargo</label>
+              <div class="input-wrapper">
+                <span class="input-icon">💼</span>
+                <input type="text" id="position" placeholder="Seu cargo">
+              </div>
+              
+              <label for="phone">Telefone</label>
+              <div class="input-wrapper">
+                <span class="input-icon">📞</span>
+                <input type="tel" id="phone" placeholder="(00) 00000-0000">
+              </div>
+              
+              <label for="email">E-mail</label>
+              <div class="input-wrapper">
+                <span class="input-icon">📧</span>
+                <input type="email" id="email" placeholder="seu@email.com">
+              </div>
+              
+              <label for="website">Site</label>
+              <div class="input-wrapper">
+                <span class="input-icon">🌐</span>
+                <input type="url" id="website" placeholder="https://seu-site.com">
+              </div>
+              
+              <label for="address">Endereço</label>
+              <div class="input-wrapper">
+                <span class="input-icon">📍</span>
+                <textarea id="address" placeholder="Endereço completo"></textarea>
+              </div>
+              <small>Preencha os campos para gerar um cartão de contato profissional</small>
+            </div>
+
+            <!-- File Upload Form -->
+            <div id="file-form" class="form-group hidden">
+              <label for="file-input">Arquivo (PDF ou Imagem)</label>
+              <div class="file-upload-wrapper">
+                <input type="file" id="file-input" accept=".pdf,.jpg,.jpeg,.png,.gif" required>
+                <label for="file-input" class="file-upload-label">
+                  <span class="file-icon">📁</span>
+                  <span class="file-text">Clique para selecionar ou arraste o arquivo</span>
+                  <span class="file-types">PDF, JPG, PNG, GIF</span>
+                </label>
+              </div>
+              <small>Faça upload de um PDF ou imagem. O QR code apontará para o download do arquivo</small>
+            </div>
+
+            <!-- Text Form -->
+            <div id="text-form" class="form-group hidden">
+              <label for="text-input">Texto</label>
+              <div class="input-wrapper">
+                <span class="input-icon">📝</span>
+                <textarea id="text-input" name="text" placeholder="Digite seu texto aqui..." required></textarea>
+              </div>
+              <small>Insira qualquer texto que deseja codificar no QR code</small>
+            </div>
+
+            <!-- Wi-Fi Form -->
+            <div id="wifi-form" class="form-group hidden">
+              <label for="ssid">Nome da Rede (SSID)</label>
+              <div class="input-wrapper">
+                <span class="input-icon">📶</span>
+                <input type="text" id="ssid" name="ssid" placeholder="Nome da sua rede Wi-Fi" required>
+              </div>
+              
+              <label for="password">Senha</label>
+              <div class="input-wrapper">
+                <span class="input-icon">🔒</span>
+                <input type="password" id="password" placeholder="Senha da rede">
+              </div>
+              
+              <label for="security">Tipo de Segurança</label>
+              <select id="security" class="modern-select">
+                <option value="nopass">Sem senha</option>
+                <option value="WPA">WPA/WPA2</option>
+                <option value="WEP">WEP</option>
+              </select>
+              <small>Configure os detalhes da rede Wi-Fi para gerar um QR code de conexão</small>
+            </div>
+
+            <!-- Customization Options -->
+            <div class="customization">
+              <h3>🎨 Personalização</h3>
+              <div class="customization-grid">
+                <div class="custom-item">
+                  <label for="qr-color">Cor do QR Code</label>
+                  <div class="color-input-wrapper">
+                    <input type="color" id="qr-color" value="#000000">
+                    <span class="color-value">#000000</span>
+                  </div>
+                </div>
+                
+                <div class="custom-item">
+                  <label for="bg-color">Cor de Fundo</label>
+                  <div class="color-input-wrapper">
+                    <input type="color" id="bg-color" value="#FFFFFF">
+                    <span class="color-value">#FFFFFF</span>
+                  </div>
+                </div>
+                
+                <div class="custom-item full-width">
+                  <label for="size">Tamanho</label>
+                  <select id="size" class="modern-select">
+                    <option value="256">Pequeno (256x256)</option>
+                    <option value="512" selected>Médio (512x512)</option>
+                    <option value="1024">Grande (1024x1024)</option>
+                  </select>
+                </div>
+                
+                <div class="custom-item full-width">
+                  <label for="logo-input">Logo (opcional)</label>
+                  <div class="file-upload-wrapper">
+                    <input type="file" id="logo-input" accept="image/*">
+                    <label for="logo-input" class="file-upload-label">
+                      <span class="file-icon">🖼️</span>
+                      <span class="file-text">Adicionar logo ao QR Code</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <button type="button" id="generate-btn" class="generate-btn">
+              <span>✨ Gerar e Baixar QR Code</span>
+            </button>
+          </form>
+
+          <div id="message" class="message"></div>
+        </div>
+
+        <div class="preview-section">
+          <div class="section-header">
+            <h2>Pré-visualização</h2>
+            <p>Visualize seu QR Code em tempo real</p>
+          </div>
+          
+          <div class="preview-container">
+            <div class="preview-card">
+              <canvas id="qr-preview"></canvas>
+            </div>
+            <p id="preview-text" class="preview-text">Selecione um tipo e preencha os dados para ver a pré-visualização</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Aba Minhas Criações -->
+    <div id="creations-tab" class="tab-content hidden">
+      <div class="container">
+        <div class="creations-section">
+          <div class="section-header">
+            <h2>Minhas Criações</h2>
+            <p>Gerencie todos os seus QR Codes criados</p>
+          </div>
+          
+          <div id="creations-list" class="creations-list">
+            <!-- Criações serão carregadas aqui -->
+          </div>
+          
+          <div id="creations-message" class="message"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
