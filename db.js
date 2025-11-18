@@ -44,14 +44,45 @@ async function initializeDatabase() {
         id INT AUTO_INCREMENT PRIMARY KEY,
         user_id INT NOT NULL,
         type VARCHAR(50) NOT NULL,
-        data TEXT NOT NULL,
-        options TEXT,
+        data MEDIUMTEXT NOT NULL,
+        options MEDIUMTEXT,
         photo_url VARCHAR(500),
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
       )
     `);
     console.log('Tabela qrs criada/verificada.');
+
+    // Atualizar campos existentes de TEXT para MEDIUMTEXT (para bancos já criados)
+    try {
+      const [dataColumn] = await pool.execute(`
+        SELECT COLUMN_TYPE 
+        FROM INFORMATION_SCHEMA.COLUMNS 
+        WHERE TABLE_SCHEMA = DATABASE() 
+        AND TABLE_NAME = 'qrs' 
+        AND COLUMN_NAME = 'data'
+      `);
+      
+      if (dataColumn.length > 0 && dataColumn[0].COLUMN_TYPE === 'text') {
+        await pool.execute(`ALTER TABLE qrs MODIFY COLUMN data MEDIUMTEXT NOT NULL`);
+        console.log('Campo data atualizado para MEDIUMTEXT.');
+      }
+
+      const [optionsColumn] = await pool.execute(`
+        SELECT COLUMN_TYPE 
+        FROM INFORMATION_SCHEMA.COLUMNS 
+        WHERE TABLE_SCHEMA = DATABASE() 
+        AND TABLE_NAME = 'qrs' 
+        AND COLUMN_NAME = 'options'
+      `);
+      
+      if (optionsColumn.length > 0 && optionsColumn[0].COLUMN_TYPE === 'text') {
+        await pool.execute(`ALTER TABLE qrs MODIFY COLUMN options MEDIUMTEXT`);
+        console.log('Campo options atualizado para MEDIUMTEXT.');
+      }
+    } catch (error) {
+      console.log('Tentando atualizar campos para MEDIUMTEXT:', error.message);
+    }
 
     // Adicionar coluna photo_url se não existir (para bancos existentes)
     try {

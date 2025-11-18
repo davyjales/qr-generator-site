@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', function() {
         data = `BEGIN:VCARD\nVERSION:3.0\nFN:${document.getElementById('name').value}\nORG:${document.getElementById('company').value}\nTITLE:${document.getElementById('position').value}\nTEL:${document.getElementById('phone').value}\nEMAIL:${document.getElementById('email').value}\nURL:${document.getElementById('website').value}\nADR:${document.getElementById('address').value}\nEND:VCARD`;
         break;
       case 'file':
-        data = uploadedFileId ? `http://localhost:3000/download/${uploadedFileId}` : '';
+        data = uploadedFileId ? `http://10.137.174.164:3000/download/${uploadedFileId}` : '';
         break;
       case 'text':
         data = document.getElementById('text-input').value;

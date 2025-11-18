@@ -52,5 +52,5 @@ app.get('/download/:id', (req, res) => {
 
 // Start server
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`Server running on http://10.137.174.164:${PORT}`);
 });

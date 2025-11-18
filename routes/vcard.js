@@ -19,7 +19,16 @@ router.get('/:id', async (req, res) => {
     }
 
     const qrData = rows[0];
-    const data = JSON.parse(qrData.data);
+    
+    // Parse seguro do JSON
+    let data;
+    try {
+      data = qrData.data ? JSON.parse(qrData.data) : {};
+    } catch (e) {
+      console.error(`Erro ao fazer parse de data do vCard ${qrId}:`, e);
+      return res.status(500).send('Erro ao carregar dados do vCard');
+    }
+    
     const photoUrl = qrData.photo_url || null;
     const avatar = data.avatar || null;
     const displayInitial = (data.name || 'U').charAt(0).toUpperCase();
@@ -328,9 +337,9 @@ router.get('/:id', async (req, res) => {
       
       ${data.address ? `
       <div class="info-item">
-        <div class="info-icon">📍</div>
+        <div class="info-icon">👤</div>
         <div class="info-content">
-          <div class="info-label">Endereço</div>
+          <div class="info-label">Sobre mim</div>
           <div class="info-value">${data.address}</div>
         </div>
       </div>
@@ -341,7 +350,93 @@ router.get('/:id', async (req, res) => {
       ${data.phone ? `<a href="tel:${data.phone}" class="action-btn">📞 Ligar</a>` : ''}
       ${data.email ? `<a href="mailto:${data.email}" class="action-btn">📧 E-mail</a>` : ''}
       ${data.website ? `<a href="${data.website}" target="_blank" rel="noopener noreferrer" class="action-btn secondary">🌐 Website</a>` : ''}
+      <button class="action-btn secondary" onclick="saveContact()">💾 Salvar Contato</button>
+      <button class="action-btn secondary" onclick="shareContact()">📤 Compartilhar</button>
     </div>
+    
+    <script>
+      const vcardData = ${JSON.stringify(data)};
+      
+      function generateVCard() {
+        let vcard = 'BEGIN:VCARD\\nVERSION:3.0\\n';
+        vcard += 'FN:' + (vcardData.name || '') + '\\n';
+        if (vcardData.company) vcard += 'ORG:' + vcardData.company + '\\n';
+        if (vcardData.position) vcard += 'TITLE:' + vcardData.position + '\\n';
+        if (vcardData.phone) vcard += 'TEL:' + vcardData.phone + '\\n';
+        if (vcardData.email) vcard += 'EMAIL:' + vcardData.email + '\\n';
+        if (vcardData.website) vcard += 'URL:' + vcardData.website + '\\n';
+        if (vcardData.address) vcard += 'NOTE:' + vcardData.address + '\\n';
+        vcard += 'END:VCARD';
+        return vcard;
+      }
+      
+      function saveContact() {
+        const vcard = generateVCard();
+        const blob = new Blob([vcard], { type: 'text/vcard' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        const contactName = (vcardData.name || 'contato').replace(/[^a-z0-9]/gi, '_');
+        a.download = contactName + '.vcf';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      }
+      
+      function shareContact() {
+        if (navigator.share) {
+          const shareText = 'Nome: ' + (vcardData.name || '') + '\\n' +
+            'Empresa: ' + (vcardData.company || '') + '\\n' +
+            'Cargo: ' + (vcardData.position || '') + '\\n' +
+            'Telefone: ' + (vcardData.phone || '') + '\\n' +
+            'E-mail: ' + (vcardData.email || '') + '\\n' +
+            'Website: ' + (vcardData.website || '') + '\\n' +
+            'Sobre: ' + (vcardData.address || '');
+          
+          navigator.share({
+            title: 'Contato: ' + (vcardData.name || 'Contato'),
+            text: shareText,
+            url: window.location.href
+          }).catch(err => {
+            console.log('Erro ao compartilhar:', err);
+            copyToClipboard(shareText);
+          });
+        } else {
+          const vcard = generateVCard();
+          copyToClipboard(vcard);
+        }
+      }
+      
+      function copyToClipboard(text) {
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(text).then(() => {
+            alert('Contato copiado para a área de transferência!');
+          }).catch(err => {
+            console.error('Erro ao copiar:', err);
+            fallbackCopy(text);
+          });
+        } else {
+          fallbackCopy(text);
+        }
+      }
+      
+      function fallbackCopy(text) {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.select();
+        try {
+          document.execCommand('copy');
+          alert('Contato copiado para a área de transferência!');
+        } catch (err) {
+          alert('Erro ao copiar. Por favor, copie manualmente.');
+        }
+        document.body.removeChild(textarea);
+      }
+    </script>
   </div>
 </body>
 </html>

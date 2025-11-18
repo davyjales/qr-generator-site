@@ -2,7 +2,7 @@ const mysql = require('mysql2/promise');
 
 // Configuração do pool de conexões MySQL (XAMPP)
 const pool = mysql.createPool({
-  host: 'localhost',
+  host: '10.137.174.164',
   user: 'root', // Usuário padrão do XAMPP
   password: '', // Senha padrão do XAMPP (vazia)
   database: 'qr_generator',

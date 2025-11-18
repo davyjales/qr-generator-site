@@ -2,7 +2,7 @@ const mysql = require('mysql2');
 
 // Configuração da conexão MySQL (XAMPP)
 const db = mysql.createConnection({
-  host: 'localhost',
+  host: '10.137.174.164',
   user: 'root', // Usuário padrão do XAMPP
   password: '', // Senha padrão do XAMPP (vazia)
   database: 'qr_generator'
