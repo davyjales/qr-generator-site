@@ -54,16 +54,18 @@ body {
   background-attachment: fixed;
   min-height: 100vh;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   padding: 1rem;
   position: relative;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 @media (min-width: 768px) {
   body {
     padding: 20px;
+    align-items: center;
   }
 }
 
