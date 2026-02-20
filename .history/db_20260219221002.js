@@ -89,6 +89,7 @@ async function initializeDatabase() {
 
     // Adicionar coluna photo_url se não existir (para bancos existentes)
     try {
+      // Verificar se a coluna já existe
       const [columns] = await pool.execute(`
         SELECT COLUMN_NAME 
         FROM INFORMATION_SCHEMA.COLUMNS 
@@ -105,6 +106,7 @@ async function initializeDatabase() {
         console.log('Coluna photo_url adicionada à tabela qrs.');
       }
     } catch (error) {
+      // Ignorar erros de coluna duplicada
       if (!error.message.includes('Duplicate column name')) {
         console.log('Tentando adicionar coluna photo_url:', error.message);
       }
@@ -116,8 +118,8 @@ async function initializeDatabase() {
         SELECT COLUMN_NAME 
         FROM INFORMATION_SCHEMA.COLUMNS 
         WHERE TABLE_SCHEMA = DATABASE() 
-        AND TABLE_NAME = 'qrs' 
-        AND COLUMN_NAME = 'hash_id'
+        AND TABLE_NAME' 
+        AND = 'qrs COLUMN_NAME = 'hash_id'
       `);
       
       if (hashColumns.length === 0) {

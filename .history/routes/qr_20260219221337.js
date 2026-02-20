@@ -18,7 +18,6 @@ router.post('/', requireAuth, async (req, res) => {
   try {
     const { type, data, options } = req.body;
     let qrData = '';
-    let qrHashId = generateHashId(16);
 
     // Prepare data based on type
     let qrId = null;
@@ -35,11 +34,11 @@ router.post('/', requireAuth, async (req, res) => {
         
         try {
           const [result] = await pool.execute(
-            'INSERT INTO qrs (hash_id, user_id, type, data, options, photo_url) VALUES (?, ?, ?, ?, ?, ?)',
-            [qrHashId, req.session.user.id, type, dataJson, optionsJson, photoUrl]
+            'INSERT INTO qrs (user_id, type, data, options, photo_url) VALUES (?, ?, ?, ?, ?)',
+            [req.session.user.id, type, dataJson, optionsJson, photoUrl]
           );
           qrId = result.insertId;
-          qrData = `${req.protocol}://${req.get('host')}/vcard/${qrHashId}`;
+          qrData = `${req.protocol}://${req.get('host')}/vcard/${qrId}`;
         } catch (err) {
           console.error('Erro ao salvar QR vCard:', err);
           return res.status(500).json({ error: 'Erro ao criar vCard' });
@@ -82,8 +81,8 @@ router.post('/', requireAuth, async (req, res) => {
 
       try {
         await pool.execute(
-          'INSERT INTO qrs (hash_id, user_id, type, data, options, photo_url) VALUES (?, ?, ?, ?, ?, ?)',
-          [qrHashId, req.session.user.id, type, dataJson, optionsJson, photoUrl]
+          'INSERT INTO qrs (user_id, type, data, options, photo_url) VALUES (?, ?, ?, ?, ?)',
+          [req.session.user.id, type, dataJson, optionsJson, photoUrl]
         );
       } catch (err) {
         console.error('Erro ao salvar QR:', err);

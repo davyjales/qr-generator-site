@@ -6,12 +6,12 @@ const path = require('path');
 // Rota para exibir página do vCard (pública, não requer autenticação)
 router.get('/:id', async (req, res) => {
   try {
-    const qrHashId = req.params.id;
+    const qrId = req.params.id;
 
-    // Buscar dados do vCard no banco usando hash_id
+    // Buscar dados do vCard no banco
     const [rows] = await pool.execute(
-      'SELECT * FROM qrs WHERE hash_id = ? AND type = ?',
-      [qrHashId, 'vcard']
+      'SELECT * FROM qrs WHERE id = ? AND type = ?',
+      [qrId, 'vcard']
     );
 
     if (rows.length === 0) {
@@ -25,7 +25,7 @@ router.get('/:id', async (req, res) => {
     try {
       data = qrData.data ? JSON.parse(qrData.data) : {};
     } catch (e) {
-      console.error(`Erro ao fazer parse de data do vCard ${qrHashId}:`, e);
+      console.error(`Erro ao fazer parse de data do vCard ${qrId}:`, e);
       return res.status(500).send('Erro ao carregar dados do vCard');
     }
     
@@ -448,3 +448,4 @@ router.get('/:id', async (req, res) => {
 });
 
 module.exports = router;
+

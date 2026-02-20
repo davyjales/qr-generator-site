@@ -14,16 +14,6 @@ async function query(sql, params) {
   }
 }
 
-// Função para gerar hash aleatório
-function generateHashId(length = 16) {
-  const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  let result = '';
-  for (let i = 0; i < length; i++) {
-    result += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-  return result;
-}
-
 // Inicializar tabelas
 async function initializeDatabase() {
   try {
@@ -89,6 +79,7 @@ async function initializeDatabase() {
 
     // Adicionar coluna photo_url se não existir (para bancos existentes)
     try {
+      // Verificar se a coluna já existe
       const [columns] = await pool.execute(`
         SELECT COLUMN_NAME 
         FROM INFORMATION_SCHEMA.COLUMNS 
@@ -105,39 +96,9 @@ async function initializeDatabase() {
         console.log('Coluna photo_url adicionada à tabela qrs.');
       }
     } catch (error) {
+      // Ignorar erros de coluna duplicada
       if (!error.message.includes('Duplicate column name')) {
         console.log('Tentando adicionar coluna photo_url:', error.message);
-      }
-    }
-
-    // Adicionar coluna hash_id se não existir (para bancos existentes)
-    try {
-      const [hashColumns] = await pool.execute(`
-        SELECT COLUMN_NAME 
-        FROM INFORMATION_SCHEMA.COLUMNS 
-        WHERE TABLE_SCHEMA = DATABASE() 
-        AND TABLE_NAME = 'qrs' 
-        AND COLUMN_NAME = 'hash_id'
-      `);
-      
-      if (hashColumns.length === 0) {
-        await pool.execute(`
-          ALTER TABLE qrs 
-          ADD COLUMN hash_id VARCHAR(20) UNIQUE
-        `);
-        console.log('Coluna hash_id adicionada à tabela qrs.');
-        
-        // Gerar hash_id para registros existentes
-        const [existingRows] = await pool.execute('SELECT id FROM qrs WHERE hash_id IS NULL');
-        for (const row of existingRows) {
-          const hashId = generateHashId(16);
-          await pool.execute('UPDATE qrs SET hash_id = ? WHERE id = ?', [hashId, row.id]);
-        }
-        console.log(`Hash IDs gerados para ${existingRows.length} registros existentes.`);
-      }
-    } catch (error) {
-      if (!error.message.includes('Duplicate column name')) {
-        console.log('Tentando adicionar coluna hash_id:', error.message);
       }
     }
   } catch (error) {
@@ -158,5 +119,5 @@ pool.getConnection()
     console.log('Certifique-se de que o XAMPP está rodando e o banco "qr_generator" existe.');
   });
 
-// Exportar pool, função query e generateHashId
-module.exports = { pool, query, generateHashId };
+// Exportar pool e função query
+module.exports = { pool, query };

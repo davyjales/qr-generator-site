@@ -84,7 +84,7 @@ async function initializeDatabase() {
         console.log('Campo options atualizado para MEDIUMTEXT.');
       }
     } catch (error) {
-      console.log('Tentando atualizar campos para MEDIUMTEXT:', error.message);
+Tentando atualizar campos      console.log(' para MEDIUMTEXT:', error.message);
     }
 
     // Adicionar coluna photo_url se não existir (para bancos existentes)

@@ -25,7 +25,7 @@ router.get('/:id', async (req, res) => {
     try {
       data = qrData.data ? JSON.parse(qrData.data) : {};
     } catch (e) {
-      console.error(`Erro ao fazer parse de data do vCard ${qrHashId}:`, e);
+      console.error(`Erro ao fazer parse de data do vCard ${qrId}:`, e);
       return res.status(500).send('Erro ao carregar dados do vCard');
     }
     
@@ -448,3 +448,4 @@ router.get('/:id', async (req, res) => {
 });
 
 module.exports = router;
+

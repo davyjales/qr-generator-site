@@ -39,7 +39,6 @@ router.get('/', requireAuth, async (req, res) => {
         
         const creation = {
           id: row.id,
-          hash_id: row.hash_id,
           type: row.type,
           data: data,
           options: options,
@@ -47,9 +46,9 @@ router.get('/', requireAuth, async (req, res) => {
           created_at: row.created_at
         };
 
-        // Para vCard, adicionar URL da página usando hash_id
+        // Para vCard, adicionar URL da página
         if (row.type === 'vcard') {
-          creation.vcardUrl = `${req.protocol}://${req.get('host')}/vcard/${row.hash_id}`;
+          creation.vcardUrl = `${req.protocol}://${req.get('host')}/vcard/${row.id}`;
         }
 
         return creation;
@@ -111,7 +110,6 @@ router.get('/:id/edit', requireAuth, async (req, res) => {
 
     res.json({
       id: row.id,
-      hash_id: row.hash_id,
       type: row.type,
       data: data,
       options: options,
@@ -160,7 +158,7 @@ router.get('/:id/image', requireAuth, async (req, res) => {
           qrData = defaultData.url;
           break;
         case 'vcard':
-          qrData = `${req.protocol}://${req.get('host')}/vcard/${row.hash_id}`;
+          qrData = `${req.protocol}://${req.get('host')}/vcard/${row.id}`;
           break;
         case 'file':
           qrData = `${req.protocol}://${req.get('host')}/download/corrupted`;
@@ -217,8 +215,8 @@ router.get('/:id/image', requireAuth, async (req, res) => {
         qrData = data.url || '';
         break;
       case 'vcard':
-        // Para vCard, usar a URL da página usando hash_id
-        qrData = `${req.protocol}://${req.get('host')}/vcard/${row.hash_id}`;
+        // Para vCard, usar a URL da página
+        qrData = `${req.protocol}://${req.get('host')}/vcard/${row.id}`;
         break;
       case 'file':
         qrData = `${req.protocol}://${req.get('host')}/download/${data.fileId || ''}`;
@@ -365,8 +363,8 @@ router.get('/:id/download', requireAuth, async (req, res) => {
         qrData = data.url || '';
         break;
       case 'vcard':
-        // Para download, usar a URL da página usando hash_id
-        qrData = `${req.protocol}://${req.get('host')}/vcard/${row.hash_id}`;
+        // Para download, usar a URL da página (mesmo que o QR code real)
+        qrData = `${req.protocol}://${req.get('host')}/vcard/${row.id}`;
         break;
       case 'file':
         qrData = `${req.protocol}://${req.get('host')}/download/${data.fileId || ''}`;
