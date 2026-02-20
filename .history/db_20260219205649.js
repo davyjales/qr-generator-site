@@ -1,7 +1,16 @@
 const mysql = require('mysql2/promise');
 
 // Configuração do pool de conexões MySQL (RAILWAY)
-const pool = mysql.createPool(process.env.MYSQL_URL);
+const pool = mysql.createPool({
+  host: process.env.MYSQLHOST,
+  user: process.env.MYSQLUSER,
+  password: process.env.MYSQLPASSWORD,
+  database: process.env.MYSQLDATABASE,
+  port: process.env.MYSQLPORT,
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
+});
 
 // Função para executar queries
 async function query(sql, params) {

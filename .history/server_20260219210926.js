@@ -19,7 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Sessão
 app.use(session({
-  secret: process.env.SESSION_SECRET || 'fallback_secret',
+  secret: 'qr-generator-secret-key',
   resave: false,
   saveUninitialized: false,
   cookie: { secure: false } // Em produção, usar HTTPS e secure: true
