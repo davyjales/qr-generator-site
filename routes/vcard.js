@@ -305,22 +305,22 @@ router.get('/:id', async (req, res) => {
     <div class="vcard-divider"></div>
 
     <div class="vcard-info">
-      ${data.phone ? `
+      ${data.instagram ? `
       <div class="info-item">
-        <div class="info-icon">📞</div>
+        <div class="info-icon">📸</div>
         <div class="info-content">
-          <div class="info-label">Telefone</div>
-          <div class="info-value"><a href="tel:${data.phone}">${data.phone}</a></div>
+          <div class="info-label">Instagram</div>
+          <div class="info-value"><a href="https://www.instagram.com/${data.instagram.replace('@', '')}" target="_blank" rel="noopener noreferrer">@${data.instagram.replace('@', '')}</a></div>
         </div>
       </div>
       ` : ''}
       
-      ${data.email ? `
+      ${data.linkedin ? `
       <div class="info-item">
-        <div class="info-icon">📧</div>
+        <div class="info-icon">💼</div>
         <div class="info-content">
-          <div class="info-label">E-mail</div>
-          <div class="info-value"><a href="mailto:${data.email}">${data.email}</a></div>
+          <div class="info-label">LinkedIn</div>
+          <div class="info-value"><a href="${data.linkedin}" target="_blank" rel="noopener noreferrer">${data.linkedin.replace('https://www.linkedin.com/in/', '').replace('https://linkedin.com/in/', '').replace(/-\d+$/, '').replace(/-/g, ' ')}</a></div>
         </div>
       </div>
       ` : ''}
@@ -347,8 +347,6 @@ router.get('/:id', async (req, res) => {
     </div>
 
     <div class="vcard-actions">
-      ${data.phone ? `<a href="tel:${data.phone}" class="action-btn">📞 Ligar</a>` : ''}
-      ${data.email ? `<a href="mailto:${data.email}" class="action-btn">📧 E-mail</a>` : ''}
       ${data.website ? `<a href="${data.website}" target="_blank" rel="noopener noreferrer" class="action-btn secondary">🌐 Website</a>` : ''}
       <button class="action-btn secondary" onclick="saveContact()">💾 Salvar Contato</button>
       <button class="action-btn secondary" onclick="shareContact()">📤 Compartilhar</button>

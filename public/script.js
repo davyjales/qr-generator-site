@@ -473,6 +473,8 @@ document.addEventListener('DOMContentLoaded', function() {
           position: document.getElementById('position')?.value || '',
           phone: document.getElementById('phone')?.value || '',
           email: document.getElementById('email')?.value || '',
+          instagram: document.getElementById('instagram')?.value || '',
+          linkedin: document.getElementById('linkedin')?.value || '',
           website: document.getElementById('website')?.value || '',
           address: document.getElementById('address')?.value || '',
           photoUrl: vcardPhotoUrl || null,
@@ -929,6 +931,14 @@ document.addEventListener('DOMContentLoaded', function() {
             <input type="email" id="edit-email" value="${escapeHtml(creation.data.email || '')}">
           </div>
           <div class="form-group">
+            <label for="edit-instagram">Instagram:</label>
+            <input type="text" id="edit-instagram" value="${escapeHtml(creation.data.instagram || '')}" placeholder="@seu-instagram">
+          </div>
+          <div class="form-group">
+            <label for="edit-linkedin">LinkedIn:</label>
+            <input type="text" id="edit-linkedin" value="${escapeHtml(creation.data.linkedin || '')}" placeholder="https://linkedin.com/in/seu-perfil">
+          </div>
+          <div class="form-group">
             <label for="edit-website">Website:</label>
             <input type="url" id="edit-website" value="${escapeHtml(creation.data.website || '')}">
           </div>
@@ -1176,7 +1186,9 @@ document.addEventListener('DOMContentLoaded', function() {
             website: document.getElementById('edit-website').value || '',
             address: document.getElementById('edit-address').value || '',
             photoUrl: editPhotoUrl,
-            avatar: editAvatar
+            avatar: editAvatar,
+            instagram: document.getElementById('edit-instagram').value || '',
+            linkedin: document.getElementById('edit-linkedin').value || ''
           };
           break;
         case 'text':
