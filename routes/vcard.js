@@ -304,7 +304,28 @@ router.get('/:id', async (req, res) => {
 
     <div class="vcard-divider"></div>
 
+      
     <div class="vcard-info">
+
+      ${data.phone ? `
+      <div class="info-item">
+        <div class="info-icon">📞</div>
+        <div class="info-content">
+          <div class="info-label">Telefone</div>
+          <div class="info-value"><a href="tel:${data.phone}">${data.phone}</a></div>
+        </div>
+      </div>
+      ` : ''}
+      
+      ${data.email ? `
+      <div class="info-item">
+        <div class="info-icon">📧</div>
+        <div class="info-content">
+          <div class="info-label">E-mail</div>
+          <div class="info-value"><a href="mailto:${data.email}">${data.email}</a></div>
+        </div>
+      </div>
+      ` : ''}
       ${data.instagram ? `
       <div class="info-item">
         <div class="info-icon">📸</div>
