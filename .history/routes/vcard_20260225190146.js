@@ -44,8 +44,7 @@ router.get('/:id', async (req, res) => {
         .replace(/-/g, ' ') // hyphens to spaces
         .split(' ')
         .map(w => w.charAt(0).toUpperCase() + w.slice(1))
-        .join(' ')
-        .trim();
+        .join(' ');
     }
 
     // Renderizar página HTML
