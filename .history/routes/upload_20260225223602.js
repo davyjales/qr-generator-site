@@ -96,20 +96,20 @@ router.post('/profile', requireAuth, profileUpload.single('photo'), async (req, 
     }
 
     // Upload para Cloudinary usando stream
-    const result = await new Promise((resolve, reject) => {
-      const stream = cloudinary.uploader.upload_stream(
-        {
-          folder: 'vcard_profiles',
-          resource_type: 'image'
-        },
-        (error, result) => {
-          if (error) reject(error);
-          else resolve(result);
-        }
-      );
+const result = await new Promise((resolve, reject) => {
+  const stream = cloudinary.uploader.upload_stream(
+    {
+      folder: 'vcard_profiles',
+      resource_type: 'image'
+    },
+    (error, result) => {
+      if (error) reject(error);
+      else resolve(result);
+    }
+  );
 
-      stream.end(req.file.buffer);
-    });
+  stream.end(req.file.buffer);
+});
 
     // URL segura da imagem
     const photoUrl = result.secure_url;
